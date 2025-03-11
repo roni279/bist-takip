@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}BIST Takip - Çıkış Yapıldı{% endblock %}
+
+{% block page_title %}Çıkış Yapıldı{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body text-center">
+                <h4 class="card-title mb-4">Çıkış Yaptınız</h4>
+                <p class="card-text">Başarıyla çıkış yaptınız. Tekrar giriş yapmak için aşağıdaki butona tıklayabilirsiniz.</p>
+                <a href="{% url 'login' %}" class="btn btn-primary">Tekrar Giriş Yap</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

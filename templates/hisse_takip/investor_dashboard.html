@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+
+{% block title %}Yatırımcı Dashboard{% endblock %}
+
+{% block page_title %}Yatırımcı Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <!-- Toplam Değer Kartı -->
+    <div class="col-md-4">
+        <div class="card card-dashboard h-100">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Toplam Değer</h5>
+                <h2 class="card-text">
+                    {% if total_current_value %}
+                        {{ total_current_value|floatformat:2 }} TL
+                    {% else %}
+                        0.00 TL
+                    {% endif %}
+                </h2>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toplam Kar/Zarar Kartı -->
+    <div class="col-md-4">
+        <div class="card card-dashboard h-100">
+            <div class="card-body">
+                <h5 class="card-title text-muted">Toplam Kar/Zarar</h5>
+                <h2 class="card-text {% if total_profit_loss > 0 %}positive-value{% elif total_profit_loss < 0 %}negative-value{% endif %}">
+                    {% if total_profit_loss %}
+                        {{ total_profit_loss|floatformat:2 }} TL
+                    {% else %}
+                        0.00 TL
+                    {% endif %}
+                </h2>
+                <p class="{% if total_profit_percentage > 0 %}positive-value{% elif total_profit_percentage < 0 %}negative-value{% endif %}">
+                    {% if total_profit_percentage %}
+                        ({{ total_profit_percentage|floatformat:2 }}%)
+                    {% else %}
+                        (0.00%)
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- İlk Yatırım Kartı -->
+    <div class="col-md-4">
+        <div class="card card-dashboard h-100">
+            <div class="card-body">
+                <h5 class="card-title text-muted">İlk Yatırım</h5>
+                <h2 class="card-text">
+                    {% if total_initial_investment %}
+                        {{ total_initial_investment|floatformat:2 }} TL
+                    {% else %}
+                        0.00 TL
+                    {% endif %}
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FON PAYLARI -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Fon Payları</h5>
+            </div>
+            <div class="card-body">
+                {% if fund_shares %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Fon Adı</th>
+                                <th>Pay Adedi</th>
+                                <th>Pay Değeri</th>
+                                <th>Toplam Değer</th>
+                                <th>İlk Yatırım</th>
+                                <th>Kar/Zarar</th>
+                                <th>%</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for share in fund_shares %}
+                            <tr>
+                                <td>{{ share.fund.name }}</td>
+                                <td>{{ share.shares_count|floatformat:2 }}</td>
+                                <td>{{ share.fund.share_value|floatformat:2 }} TL</td>
+                                <td>{{ share.current_value|floatformat:2 }} TL</td>
+                                <td>{{ share.initial_investment|floatformat:2 }} TL</td>
+                                <td class="{% if share.current_value > share.initial_investment %}positive-value{% elif share.current_value < share.initial_investment %}negative-value{% endif %}">
+                                    {{ share.profit_loss|floatformat:2 }} TL
+                                </td>
+                                <td class="{% if share.current_value > share.initial_investment %}positive-value{% elif share.current_value < share.initial_investment %}negative-value{% endif %}">
+                                    {{ share.profit_loss_percentage|floatformat:2 }}%
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    Henüz fon payınız bulunmuyor.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- YAKINDA GELİŞTİRİLECEK ÖZELLİKLER -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="alert alert-warning">
+            <h5><i class="fas fa-tools me-2"></i> Yakında Gelecek Özellikler</h5>
+            <p class="mb-0">Performans grafikleri, detaylı fon analizleri ve daha fazlası çok yakında burada olacak!</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // İleride grafikler için JavaScript kodu buraya eklenecek
+</script>
+{% endblock %} 

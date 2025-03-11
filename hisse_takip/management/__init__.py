@@ -1,0 +1,1 @@
+# Management paketi için boş __init__.py 

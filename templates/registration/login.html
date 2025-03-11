@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}BIST Takip - Giriş{% endblock %}
+
+{% block page_title %}Giriş Yap{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="card-title mb-0">Yatırımcı Girişi</h4>
+            </div>
+            <div class="card-body">
+                {% if form.errors %}
+                <div class="alert alert-danger">
+                    Kullanıcı adı veya şifre hatalı. Lütfen tekrar deneyin.
+                </div>
+                {% endif %}
+                
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="id_username" class="form-label">Kullanıcı Adı</label>
+                        <input type="text" name="username" id="id_username" class="form-control" required autofocus>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="id_password" class="form-label">Şifre</label>
+                        <input type="password" name="password" id="id_password" class="form-control" required>
+                    </div>
+                    
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" name="remember" id="id_remember" class="form-check-input">
+                        <label for="id_remember" class="form-check-label">Beni Hatırla</label>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                    </div>
+                    
+                    <input type="hidden" name="next" value="{{ next }}">
+                </form>
+                
+                <div class="mt-3 text-center">
+                    <a href="#">Şifremi Unuttum</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
