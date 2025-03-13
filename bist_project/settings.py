@@ -12,27 +12,21 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# .env dosyası için python-dotenv'i kullanalım
-from dotenv import load_dotenv
-load_dotenv()  # .env dosyasını yükle
+
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY değerini çevre değişkenine taşıyalım
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-#p3-@&$_vu_j)1mi@z+b)pc1y6puca$#ft!4p0)d@lv%6rc)(c')
+SECRET_KEY = 'django-insecure-#p3-@&$_vu_j)1mi@z+b)pc1y6puca$#ft!4p0)d@lv%6rc)(c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG modunu False olarak ayarla (.env'de DEBUG=True varsa geliştirme modunda kalır)
-DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = True
 
-# Alan adı ayarları
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.pythonanywhere.com']
-# Domain adınızı alınca buraya ekleyeceksiniz:
-# ALLOWED_HOSTS = ['bistportal.com', 'www.bistportal.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -83,10 +77,10 @@ WSGI_APPLICATION = 'bist_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
@@ -125,11 +119,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# Media dosya ayarları
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -202,14 +191,3 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/investor/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
-
-# Güvenlik ayarları (HTTPS ile kullanım için)
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 yıl
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
